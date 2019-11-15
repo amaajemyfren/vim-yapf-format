@@ -6,7 +6,7 @@ if exists("g:yapf_format_loaded")
   finish
 endif
 
-if ! has('python')
+if ! (has('python') || has('python3'))
   echohl WarningMsg |
         \ echomsg "vim-yapf-format requires vim compiled with python support" |
         \ echohl None
