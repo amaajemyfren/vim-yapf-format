@@ -13,6 +13,14 @@ if ! (has('python') || has('python3'))
   finish
 endif
 
+if has("python3")
+    command! -nargs=1 Py py3 <args>
+    command! -nargs=1 Pyf py3f <args>
+else
+    command! -nargs=1 Py py <args>
+    command! -nargs=1 Pyf pyf <args>
+endif
+
 function! GetVar(...)
   let l:varName = a:1
   let l:varValue = a:2
@@ -34,8 +42,8 @@ command! -range YapfFormat <line1>,<line2>call YapfFormat()
 function! YapfFormat() range
   if ! s:appended_yapf_path
     if exists("g:yapf_format_yapf_location")
-      py import sys
-      exe 'py sys.path.append("' . expand(g:yapf_format_yapf_location) . '")'
+      Py import sys
+      exe 'Py sys.path.append("' . expand(g:yapf_format_yapf_location) . '")'
     endif
     let s:appended_yapf_path = 1
   endif
@@ -56,7 +64,7 @@ function! YapfFormat() range
         \ !!g:yapf_format_allow_out_of_range_changes :
         \ 0
 
-  exe a:firstline . ',' . a:lastline . 'pyf ' . s:yapf_format_script
+  exe a:firstline . ',' . a:lastline . 'Pyf ' . s:yapf_format_script
 
 
   if exists('l:error_type')
